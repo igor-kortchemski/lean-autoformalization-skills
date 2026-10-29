@@ -61,13 +61,14 @@ neither is immune to noise. Rebuild affected consumers after structural changes.
 Keep improvements supported by the evidence; revert only your own unsuccessful
 edits. Stop tuning a technique when repeated trials show no useful gain.
 
-For Palomar, a faster elaborator is insufficient if the resulting term is costly
-for the independent kernel. Reject native-evaluation axioms, including any
+For publication targets, including GitHub-only artifacts intended to be
+Palomar-compatible, a faster elaborator is insufficient if the resulting term is
+costly for the independent kernel. Reject native-evaluation axioms, including any
 introduced by `native_decide` or `bv_decide` in the pinned toolchain.
 Recheck affected exports' transitive axiom closures against
 `propext`, `Classical.choice`, and `Quot.sound`. Run the project's independent
-replay when term size or kernel computation is the issue, and again at the
-deposit checkpoint.
+replay when term size or kernel computation is the issue. Full Palomar preflight
+belongs to requested verification or submission, not ordinary performance tuning.
 
 ## Requested repository benchmark
 

@@ -19,6 +19,10 @@ The same-day audit revision clarifies selective review reuse and upgrade steps,
 aligns trust-policy scope, and shortens prompts and autonomy guidance.
 The publication default now includes Comparator for advertised mathematical
 results of any project size, with CI and Comparator badges in GitHub READMEs.
+The early statement checkpoint adds independent review before substantial main
+or dependent proof work, with focused review reuse and standalone skill routing.
+GitHub publication artifacts now target Palomar compatibility by default, while
+full Palomar preflight and registry actions remain separate requested work.
 The instruction text in this adaptation is offered under CC BY 4.0, subject to
 the third-party terms below. This is not an official release or endorsement by
 Scott Armstrong or Palomar.

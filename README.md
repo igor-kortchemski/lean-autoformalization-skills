@@ -27,11 +27,19 @@ their task arises, rather than reading the entire collection at every turn.
 
 ## Paper-companion workflow
 
-When publication is part of the intended outcome, state GitHub, Palomar, or both
-in the initial formalization request; use the destination clause in
-[Prompt suggestions](PROMPT_SUGGESTIONS.md). Apply the relevant requirements
-during design and keep expensive verification at integration and publication
-milestones. An undecided destination need not block independent proof work.
+When publication is part of the intended outcome, prepare a Palomar-compatible
+GitHub artifact by default; apply the relevant constraints during design. Full
+Palomar preflight, submission, and registration are separate requested actions.
+Use the short publication clause in [Prompt suggestions](PROMPT_SUGGESTIONS.md)
+and keep expensive checks at meaningful integration and publication milestones.
+
+Before substantial proof work on a main result or work depending on a shared
+source-facing interface, obtain a passing independent statement review. The
+[early statement checkpoint](skills/lean-statement-audit/SKILL.md#early-statement-checkpoint)
+uses one reviewer by default, batches related targets, and reuses valid reviews.
+It permits exploration and work to establish missing characterization bridges;
+ordinary helpers need no separate checkpoint. The entry-point skills also support
+direct review when the audit companion is not installed.
 
 For a research paper published with its formalization, use the root templates
 as needed:
@@ -74,6 +82,12 @@ or a curated export from private development. Choose the destination and the
 requested action independently: preparing a candidate does not itself publish,
 submit, or register it. Reuse authorisation already given for those actions.
 
+GitHub artifacts for mathematical results should meet current Palomar requirements,
+including repository layout, dependencies, permitted axioms, the comparison
+interface, and metadata. Report conflicts with existing project constraints
+before changing them. State what was checked and what remains unverified;
+artifact preparation does not claim full Palomar verification.
+
 Comparator verification is the default for published mathematical results,
 including small and single-theorem projects. Keep the comparison interface
 focused on advertised results and review it against the source; project size
@@ -85,8 +99,8 @@ publication checkpoints. Document actual compatibility or policy blockers.
   citation metadata. Include CI and Comparator badges near the README title,
   linked to real checks with accurate status and scope.
   Create a versioned GitHub Release when requested. Blueprint, API documentation,
-  and Zenodo archival are optional. Palomar-specific submission requirements
-  apply only when Palomar is selected.
+  and Zenodo archival are optional. Include Palomar-compatible artifact files;
+  a GitHub-only request does not run full Palomar preflight or registry actions.
 - **Palomar:** reuse an existing public GitHub commit and its adequate
   documentation, or prepare a public candidate if one is needed. Apply the
   current Challenge/Solution, metadata, Comparator, and preflight requirements.
@@ -113,9 +127,9 @@ the paper-companion workflow, reuse an existing equivalent coverage record or
 copy the formalization report template to the project root; use the
 recommendations template as needed.
 
-For Palomar-sensitive project design, install `lean-publication` alongside
-`lean-project-architecture` to supply the policy references. Ordinary project
-design can use `lean-project-architecture` alone.
+For publication-sensitive design, `lean-publication` supplies the detailed policy
+references. The architecture and workflow skills can also consult the linked
+official standard directly; a missing companion does not require installation.
 
 When copied skills will be shared, preserve the accompanying attribution,
 adaptation notices, and applicable license files alongside them, without
@@ -173,8 +187,9 @@ is planned; load the current Palomar submission procedure only when applicable.
 ## Palomar and existing projects
 
 The [dated requirements guide](skills/lean-publication/references/requirements.md)
-links the official sources checked for this edition. Re-read them at deposit
-time; requirements can change and this archive does not certify a project. Do
+links the official sources checked for this edition. Re-read them for relevant
+design decisions and final publication candidates; requirements can change and
+this archive does not certify a project. Do
 not use a Palomar-compatible default to override stricter repository rules.
 
 For an existing project with approved frozen results, keep its manifests,

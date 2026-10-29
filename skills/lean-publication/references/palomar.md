@@ -1,10 +1,12 @@
 # Palomar preparation and publication
 
-Read this only for Palomar or both destinations. Read
-[requirements.md](requirements.md), then refresh its official policy, metadata,
-allowlists, and pipeline sources before deposit-sensitive changes. Record the
-policy and pipeline revisions actually used; a retrieval date or moving URL is
-not an immutable revision. Resolve material conflicts before claiming compliance.
+Use the preparation guidance for GitHub publication artifacts as well as Palomar.
+Read [requirements.md](requirements.md) and refresh its official policy, metadata,
+and allowlists when making compatibility-sensitive design choices and preparing
+the final candidate; do not repeat this for every proof edit. Record the policy
+revisions used with the candidate's existing evidence. Resolve material conflicts
+before claiming compliance. Pipeline revisions matter when full verification is
+requested; artifact preparation alone does not run it.
 
 ## Prepare the mathematical interface
 
@@ -42,10 +44,10 @@ GitHub presentation improvements and a GitHub Release are not prerequisites.
 
 ## Verify and submit
 
-Run focused project checks and local comparison as useful, then follow
-[submission.md](submission.md) for the complete official mechanical preflight
-and live intake/registration protocol. Preparation without external execution
-may leave a ready workflow and clearly unrun preflight; never claim it passed.
+Run focused project checks and local comparison as useful. Follow
+[submission.md](submission.md) when full verification or submission is requested,
+reusing existing authorization. Artifact preparation alone does not run the full
+preflight or contact registry intake. Report unrun checks; never claim they passed.
 
 Share applicable builds and reviews with GitHub preparation. A successful full
 preflight can satisfy the isolated mechanical checks it covers for the same

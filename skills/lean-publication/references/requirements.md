@@ -1,9 +1,10 @@
 # Palomar requirements and sources
 
 Checked on **28 October 2026**. This is a navigation aid, not a complete or
-permanently pinned specification. Refresh the live policy, schema, allowlists,
-and pipeline when preparing a deposit. Repository-specific restrictions may
-be stricter. No source branch HEAD is claimed here.
+permanently pinned specification. Refresh the live policy, schema, and allowlists
+for publication-sensitive design and the final GitHub or Palomar candidate;
+refresh the pipeline when full verification is requested. Repository-specific
+restrictions may be stricter. No source branch HEAD is claimed here.
 
 ## Source layout and dependencies
 

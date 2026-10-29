@@ -13,6 +13,13 @@ decisions with one owner. Preserve approved frozen statements and their
 dependency definitions; this skill creates
 no new exception to the project's axiom or draft policy.
 
+When publication is intended, resolve interface and dependency choices against
+current artifact requirements before assigning dependent proof work. Use
+`lean-project-architecture` and `lean-publication` as needed, or consult the
+[official submission standard](https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md)
+directly. Reuse settled project decisions; full Palomar preflight remains separate
+requested work.
+
 ## Split by actual independence
 
 Prioritize proving every main result and its required dependencies, while
@@ -24,6 +31,20 @@ Mathlib searches, alternative-route explorations, or source reviews when their
 benefit justifies duplicated context and coordination. Lower elapsed time need
 not mean lower total compute. Avoid assigning dependent implementation tasks
 before their shared API is settled.
+
+Before assigning substantial proof tasks, check that the relevant main statements
+and shared source-facing interfaces have passed independent statement-fidelity
+review; batch related reviews and continue independent work while they are pending.
+Use `lean-statement-audit` when available; otherwise have one reviewer who did
+not author the declaration compare the exact source, elaborated statement, and
+relevant definitions. Check explicit and bundled premises, quantifier and witness
+scope, carriers, normalization, boundary cases, coercions, and required
+characterizations or equivalences.
+Claims relying on unresolved source ambiguity or missing semantic justification
+cannot pass; work to establish a missing bridge can proceed after review of its
+own target.
+No additional installation or user approval is required beyond existing project
+rules.
 
 Give each worker the exact target, source location, owned files, usable inputs,
 validation command, and relevant project constraints. Include the obstruction

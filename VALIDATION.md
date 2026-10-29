@@ -9,21 +9,72 @@ build, theorem proof, Comparator run, hosted Palomar preflight, submission, or
 registration was performed. The checks below concern package structure,
 internal consistency, and the instructions introduced by this revision.
 
+## Palomar-compatible GitHub artifact default
+
+On 29 October 2026, made Palomar compatibility the default for GitHub publication
+artifacts containing mathematical results. Active skills, publication references,
+README guidance, and prompts now share that default. Earlier GitHub-only trust
+policy exceptions in the historical records below are superseded. Existing
+project constraints remain binding; incompatibilities must be reported before
+changing them.
+
+Full Palomar preflight, intake, and registration remain separate requested work.
+An authorized submission includes required verification; registration retains
+its separate decision about the returned review. No new skill, script, validation
+service, or automatic preflight workflow was added.
+
+Two independent agents reviewed the implementation: one checked cross-file
+consistency and scope; the other walked through six fictional requests covering
+GitHub-only preparation, incompatible existing projects, a local lemma, reusable
+full-preflight evidence, actual submission, and architecture-only installation.
+The reviews led to short early-policy routes in workflow and orchestration and
+direct official-source links for standalone use. Focused rechecks confirmed those
+routes preserve existing decisions and introduce no installation or approval gate.
+
+All six skills passed the bundled skill validator. Local Markdown links and
+`git diff --check` passed. These are package checks and instruction-level reviews,
+not executed proofs or measurements of compute savings. No Lean build, Comparator
+run, full preflight, publication, registry action, or skill installation was performed.
+
+## Early statement checkpoint implementation
+
+On 29 October 2026, implemented the user-approved
+[statement-checkpoint proposal](PROPOSED_STATEMENT_CHECKPOINT.md) in the workflow,
+architecture, orchestration, and statement-audit skills. The audit skill owns
+the full checkpoint; the three entry points provide direct-review fallbacks for
+partial installations. README guidance and adaptation attribution were updated.
+No new skill, script, manifest, or installation requirement was added.
+
+Validation completed:
+
+- The four edited skills passed the bundled `skill-creator/scripts/quick_validate.py`.
+- Package-local Markdown links and the new heading link resolve; `git diff --check`
+  passed.
+- An independent implementation reviewer found no actionable mismatch with the
+  approved proposal or contradictory requirements.
+- A separate reviewer, without the proposal or prior audit reports, walked through
+  five fictional tasks: a uniform-constant mismatch; a construction awaiting its
+  characterization; workflow-only installation with and without a reviewer;
+  proof-route versus semantic changes; and orchestration without the audit skill.
+- The walkthrough identified a missing standalone fidelity checklist in the
+  orchestrator. A compact comparison of premises, scopes, carriers, normalization,
+  boundary cases, coercions, and characterizations/equivalences was added. The
+  reviewer rechecked the saved text and confirmed that the finding was resolved.
+
+These were instruction-level reviews, not executed Lean proofs or performance
+measurements. No Lean build, Comparator run, installation, or synchronization of
+installed copies was performed.
+
 ## Packaging cleanup
 
-On 29 October 2026, addressed F2 and F3 from [AUDIT_CURRENT.md](AUDIT_CURRENT.md):
+On 29 October 2026, completed packaging cleanup:
 
 - The README and architecture skill now identify `lean-publication` as the
   companion supplying policy references for Palomar-sensitive design. Ordinary
   project design remains usable with `lean-project-architecture` alone.
-- Converted 23 internal evidence links in the historical audit to package-relative
-  paths, retaining historical line numbers in prose. The older-package citation
-  explicitly identifies an external source that is not bundled.
-- Marked the later audit's findings as addressed while preserving its original
-  assessment, measurements, and snapshot fingerprint.
 - Removed Finder metadata and added a `.DS_Store` rule to `.gitignore`.
 
-F1's destination-specific badge condition and the optional initial-prompt
+The destination-specific badge condition and the optional initial-prompt
 destination clause were implemented before this cleanup and remain intact.
 
 All six skills passed `skill-creator/scripts/quick_validate.py`; all six UI
@@ -88,9 +139,8 @@ published. The sections below are historical records of earlier revisions.
 
 ## Audit implementation
 
-Implemented the recommendations from [AUDIT.md](AUDIT.md) on 29 October 2026.
-The audit remains a historical assessment of its recorded snapshot; the sections
-below this implementation record also describe earlier revisions.
+Implemented review recommendations on 29 October 2026. The sections below
+this implementation record also describe earlier revisions.
 
 - **F1:** statement-fidelity review and proof-correspondence review now have
   separate reuse criteria. Proof changes require checking the affected route and

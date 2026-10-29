@@ -5,6 +5,12 @@ documentation, and citation files. The community
 [LeanProject template](https://github.com/leanprover-community/LeanProject) is a
 reference for substantial projects, not a required migration for a small one.
 
+For published mathematical results, prepare the artifact under the current
+[Palomar requirements](requirements.md), including the interface and metadata in
+[palomar.md](palomar.md). A GitHub-only request still uses this artifact default;
+it does not request full Palomar preflight, submission, or registration. Report
+incompatibilities with existing project constraints before changing them.
+
 ## Help readers find, check, and use the result
 
 Make the README answer four questions near the top:
@@ -70,9 +76,9 @@ Keep its verification surface small:
 - A proved Solution exposes the matching declarations. Reconcile the comparison
   list with every advertised result and inspect relevant definition dependencies.
 - A reviewed configuration identifies Challenge, Solution, theorem names, and
-  permitted axioms. Use the project's actual trust policy for GitHub-only work;
-  Palomar's allowlist applies when Palomar is selected. Never permit `sorryAx` in
-  a claimed proof or loosen policy merely to make a check pass.
+  permitted axioms. Apply Palomar's axiom allowlist and any stricter project
+  policy. Report conflicts with an established trust policy; never permit
+  `sorryAx` in a claimed proof or loosen policy merely to make a check pass.
 - A reproducible check uses pinned, compatible tooling and records the candidate,
   configuration, compared declarations, and actual outcome. Prefer supported
   modern tooling; do not upgrade an existing toolchain without authorization.

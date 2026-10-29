@@ -9,17 +9,16 @@ If publication is part of the final deliverable, add this clause to the initial
 formalization prompt:
 
 ```text
-The final deliverable should be ready for publication on [GitHub, Palomar, or both].
-Account for that destination during formalization and prepare a verified
-publication candidate.
+Prepare the final deliverable for GitHub with a Palomar-compatible artifact.
+Account for compatibility during formalization and report completed checks and
+remaining gaps. Full Palomar preflight and registry actions are not requested.
 ```
 
-Use applicable destination requirements to inform design; keep expensive
+Use current artifact requirements to inform design; keep expensive
 verification at relevant integration and publication milestones. “Ready for
 publication” requests preparation. Specify publication or submission actions
 separately when they are also requested, reusing any authorization already given.
-If the destination is undecided, continue work that does not depend on it and
-resolve the choice when a concrete design or delivery decision requires it.
+The artifact default does not require choosing a registry action before proof work.
 
 ## Five short starters
 
@@ -72,7 +71,8 @@ obligations without weakening the target.
 ```text
 Use $lean-publication to prepare [project, source/version, and declared scope]
 for [GitHub, Palomar, or both]. Reuse adequate documentation and applicable
-verification evidence. Use Comparator for the advertised mathematical results,
+verification evidence. Prepare Palomar-compatible artifacts by default. Use
+Comparator for the advertised mathematical results,
 including small projects. For GitHub or both destinations, include CI and
 Comparator badges in the GitHub README.
 Deliver a reviewable candidate, its identity, actual
@@ -128,7 +128,8 @@ verification for the advertised results and include CI and Comparator badges
 linked to actual checks. Verify the exact
 candidate and report its location, checks, and blockers. This is preparation
 only: do not publish or upload. Keep optional sites and archival within the
-requested scope; do not add Palomar requirements.
+requested scope. Meet current Palomar artifact requirements, but do not run full
+Palomar preflight, submit, or register without a separate request.
 ```
 
 ### Prepare Palomar from a public commit
@@ -136,8 +137,8 @@ requested scope; do not add Palomar requirements.
 ```text
 Use $lean-publication to prepare Palomar submission of [public repository,
 full commit SHA, and results]. Apply current requirements, reuse adequate
-presentation and evidence, and prepare the required full preflight. Execute
-external checks only if already authorized; identify any unrun checks. If changes
+presentation and evidence, and prepare the required full preflight. Run it only
+if already requested and authorized; identify any unrun checks. If changes
 are needed, identify the new candidate and refresh affected evidence. Report
 completed checks and blockers. This authorizes preparation only; keep publication
 of changes, submission, and registration pending.
@@ -150,8 +151,8 @@ Use $lean-publication to prepare [project and declared paper scope] for GitHub
 and Palomar as one candidate. Prepare both destinations' files before final
 verification, share the coverage record and applicable evidence, and identify
 the same intended commit. Include CI and Comparator badges in the GitHub README.
-Complete authorized checks, including mandatory
-Palomar verification when execution is authorized; report unrun checks precisely.
+Complete requested, authorized checks; prepare the full Palomar verification
+workflow but run it only if requested. Report unrun checks precisely.
 Return the candidate, actual results, blockers, and proposed actions. This is
 preparation only; do not publish, submit, or register.
 ```

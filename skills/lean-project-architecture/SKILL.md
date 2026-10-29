@@ -65,14 +65,17 @@ manifest, provider, and sealing protocol exactly. A new project does not need
 an additional internal freezing system merely because it uses Comparator.
 
 Respect existing proof-hole rules: a comparison interface does not authorize new
-Challenge holes or exceptions to frozen declarations. For GitHub-only publication,
-use the project's permitted-axiom policy; never widen it merely to pass a comparison.
+Challenge holes or exceptions to frozen declarations. Publication targets use
+Palomar's permitted axioms and any stricter project policy. Report conflicts with
+established toolchains, dependencies, or proof policy before changing them.
 
-For Palomar-sensitive design, use the `lean-publication` companion for its
-current policy references. Read those references when making deposit-sensitive
-decisions and apply the current Challenge import allowlist, module conventions,
-size limits, axiom restrictions, and submission requirements. Prefer Mathlib-only
-statement dependencies when adequate; additional Challenge libraries must satisfy
+For work intended for publication, target Palomar-compatible artifacts by default.
+Use `lean-publication` for current policy references when available, or consult
+the [official submission standard](https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md)
+directly. Apply the Challenge import allowlist, module conventions, size limits,
+and axiom restrictions during design. Full preflight and registry actions remain
+separate requested work. Prefer Mathlib-only statement dependencies when adequate;
+additional Challenge libraries must satisfy
 that allowlist, separately from Solution dependencies. Leave margin under Challenge
 and repository-wide Lean-file limits, and plan any required module-system port early.
 
@@ -93,6 +96,15 @@ database and per-node metadata are optional deliverables, not prerequisites for
 useful Lean work. Topology is not proof status.
 
 End with concrete declarations or design choices, a feasible next proof task,
-and any unresolved obstruction. Obtain available independent source review for
-the main interface or a substantial semantic change; do not require a separate
-approval cycle for ordinary internal helpers.
+and any unresolved obstruction. Before substantial proof work, obtain a passing
+independent statement-fidelity review of the main interface; reuse valid review
+and revisit affected findings after semantic changes. Ordinary internal helpers
+need no separate approval cycle.
+
+Use `lean-statement-audit` when available; otherwise have one reviewer who did
+not author the declaration compare the exact source, elaborated statement, and
+relevant definitions using this skill's fidelity rules. Claims relying on
+unresolved source ambiguity or missing semantic justification cannot pass;
+work to establish a missing bridge can proceed after review of its own target.
+No additional installation or user approval is required beyond existing project
+rules.

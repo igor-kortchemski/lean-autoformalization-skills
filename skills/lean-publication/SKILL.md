@@ -11,11 +11,20 @@ destination and action from the request and prior decisions; do not require a
 questionnaire. A preparation request ends with a reviewable local candidate.
 Carry out publication or submission only within the user's authorization.
 
-| Destination | Read when applicable |
+Prepare GitHub publication artifacts for mathematical results to meet current
+Palomar requirements by default. Apply relevant constraints during design, reuse
+validation evidence, and report unresolved or unverified compatibility issues.
+Preserve established toolchains, dependencies, and proof policy; report
+incompatibilities before changing them. Full Palomar preflight, intake, and
+registration are separate requested actions; GitHub publication alone does not
+request them. A request to submit includes its required verification, while
+registration still requires the decision described in the submission protocol.
+
+| Work | Read when applicable |
 | --- | --- |
-| GitHub | [github.md](references/github.md): public repository, Comparator, CI and badges, and requested GitHub Release |
-| Palomar | [palomar.md](references/palomar.md): statement interface, registry requirements, preflight, intake, and registration |
-| Both | Both references, sharing one candidate and the evidence below |
+| Artifact preparation | [requirements.md](references/requirements.md) and [palomar.md](references/palomar.md): current constraints, statement interface, and metadata |
+| GitHub publication | [github.md](references/github.md): public repository, Comparator, CI and badges, and requested GitHub Release |
+| Requested Palomar verification or submission | [submission.md](references/submission.md): full preflight, intake, and registration protocol |
 
 Palomar needs a public GitHub commit, not necessarily a GitHub Release. For an
 existing public commit, reuse its presentation and CI; do not redesign the
@@ -53,8 +62,8 @@ Never invent a license choice, endorsement, DOI, review, or missing proof count.
 
 Publication cleanup must preserve theorem statements and their defining
 dependencies. Respect frozen declarations and the project's proof policy.
-For both destinations, prepare documentation and Palomar files before final
-verification, so they describe the same candidate.
+Prepare documentation, Challenge/Solution, Comparator configuration, and
+formalization metadata before final checks, so they describe one candidate.
 
 ## Verify once where the evidence applies
 
@@ -63,17 +72,18 @@ public dependencies. Ensure every advertised result is built; a default Lake
 target may omit modules. Inspect the relevant proof/axiom closure and existing
 project checks. A proved result must not depend on `sorryAx`. Label unfinished
 work and deliberate Challenge holes separately; report other axioms honestly
-and apply the project's policy. Palomar-specific restrictions apply only when
-Palomar is selected.
+and apply the project's policy. Check Palomar artifact requirements for the
+published mathematical exports and the entire candidate tree, including unused
+files; a compatible statement interface alone is insufficient.
 
 Use Comparator by default for published mathematical results, including small
 and single-theorem projects. Reuse or prepare a small Challenge/Solution interface
 for the advertised public results; review the Challenge and its definitions
 against the mathematical source independently of the proof implementation.
 Verify the exact candidate, configuration, declarations, and permitted axioms.
-GitHub-only comparison follows the project's trust policy; do not widen it just
-to pass. Report concrete toolchain or policy blockers without silently upgrading
-versions, bypassing checks, or claiming comparison succeeded. Project size alone
+Use Palomar's permitted axioms together with any stricter project policy; never
+widen a policy to pass. Report concrete toolchain or policy blockers without
+silently upgrading versions, bypassing checks, or claiming comparison succeeded. Project size alone
 is not an exception; a utility library without such target results may use a
 suitable kernel/axiom check instead, labeled accurately.
 
@@ -93,7 +103,9 @@ is insufficient. Reuse a full preflight's Comparator evidence when it covers
 the same candidate and configuration. Run comparison at relevant integration
 and publication checkpoints, not after every helper edit. Do not repeat an
 equivalent build because two destinations were selected, or substitute ordinary
-CI for mandatory Palomar verification.
+CI for mandatory Palomar verification. Report the checks actually completed and
+any remaining gaps; build or Comparator success alone is not full Palomar
+verification. Do not add a full-preflight CI job merely to prepare a GitHub artifact.
 Changes to sources, dependencies, toolchain, targets, or configuration require
 reassessing affected evidence. Reuse does not turn self-review into independent
 review. Check links, citation metadata, and generated documentation as applicable.
