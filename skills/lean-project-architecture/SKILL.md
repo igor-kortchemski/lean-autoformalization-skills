@@ -1,0 +1,98 @@
+---
+name: lean-project-architecture
+description: Design a Lean formalization and its public-result comparison interface. Use when choosing mathematical encodings, module boundaries, target statements, or a proof plan; not for routine edits within an established API.
+license: CC-BY-4.0
+---
+
+# Design for proof and publication
+
+Start from the source result, the existing repository, and the intended
+declarations. Preserve already approved interfaces. For a new project, establish
+the current supported environment before building substantial infrastructure;
+for an existing project, report incompatibilities without silently upgrading it.
+
+## Settle the mathematical interface
+
+Write down the target's premises, conclusion, carrier, boundary cases, and
+constant dependence. Work autonomously within scope and existing authorization,
+resolving ambiguities from the source, project context, and prior decisions first.
+Ask only for essential missing input, decisions, or authorization needed for
+faithful completion; explain the blocker and continue independent work. If
+questions are prohibited, record the blocker and leave dependent work pending
+without guessing mathematics or permission.
+
+Preserve the claimed mathematics. An equivalent encoding needs a clear
+mathematical justification, not necessarily identical notation.
+
+Prefer existing Mathlib objects and APIs. Choose an ambient carrier that fits
+the mathematics and downstream theorems. Build the access and characterization
+lemmas that make an encoding usable before expanding the proof campaign.
+
+Exploration is allowed: prototype alternative statements and constructions in
+the repository-approved scratch area without unauthorized axioms or holes.
+Distinguish candidates from accepted source statements. Proof attempts can inform
+API design; there is no requirement to finalize every helper before starting.
+
+For an object specified by a property, establish existence and the properties
+needed by its clients. Establish uniqueness or choice independence when the
+source or later claims require it. A constructive definition may precede its
+characterization proof; do not claim source fidelity until that bridge is proved.
+Honor stricter project rules, including any requirement to land them together.
+
+## Keep a small public-result comparison interface
+
+Use Comparator by default when publishing named mathematical results, including
+small or one-theorem GitHub-only projects. Design a small Challenge/Solution pair
+for the selected public exports and their semantic dependencies; no per-helper
+comparison interface is needed.
+
+Reconstruct and review the Challenge against the mathematical source independently
+of the proof implementation, so a mathematician can read it on its own. Plan the
+exact compared declarations, Challenge/Solution and Comparator configuration paths,
+and candidate revision. The compared fully qualified names and elaborated types
+must match, together with their semantic definition closure; matching interfaces
+does not itself establish source fidelity.
+
+Keep statement definitions public and their needed bodies exposed under the
+pinned toolchain's visibility conventions. Definitions copied into the Challenge
+must retain their mathematical content and the identities required by Comparator. Avoid
+private generated names or helper dependencies that cannot travel with them.
+Plan and audit the transitive statement closure, not just the top-level imports.
+
+Separate statement and proof modules so proof code never imports the Challenge
+or a quarantined draft. If the project has frozen declarations, retain its
+manifest, provider, and sealing protocol exactly. A new project does not need
+an additional internal freezing system merely because it uses Comparator.
+
+Respect existing proof-hole rules: a comparison interface does not authorize new
+Challenge holes or exceptions to frozen declarations. For GitHub-only publication,
+use the project's permitted-axiom policy; never widen it merely to pass a comparison.
+
+For Palomar-sensitive design, use the `lean-publication` companion for its
+current policy references. Read those references when making deposit-sensitive
+decisions and apply the current Challenge import allowlist, module conventions,
+size limits, axiom restrictions, and submission requirements. Prefer Mathlib-only
+statement dependencies when adequate; additional Challenge libraries must satisfy
+that allowlist, separately from Solution dependencies. Leave margin under Challenge
+and repository-wide Lean-file limits, and plan any required module-system port early.
+
+## Plan only enough to unblock proofs
+
+Prioritize proving every main result and its required dependencies, while
+retaining all other in-scope claims as completion obligations.
+
+For a small result, a short list of target, next lemmas, and unresolved decisions
+is sufficient. Expand a dependency graph only when task size or an explicit
+request warrants it. Record substantive obligations, external inputs, and
+alternative proof routes; an edge never licenses adding a premise to the target.
+
+When extracting a source proof graph, give steps stable names and source
+locators, distinguish conjunctions from alternative routes, and mark missing
+arguments. Review the routes that carry the main result. A complete proof
+database and per-node metadata are optional deliverables, not prerequisites for
+useful Lean work. Topology is not proof status.
+
+End with concrete declarations or design choices, a feasible next proof task,
+and any unresolved obstruction. Obtain available independent source review for
+the main interface or a substantial semantic change; do not require a separate
+approval cycle for ordinary internal helpers.

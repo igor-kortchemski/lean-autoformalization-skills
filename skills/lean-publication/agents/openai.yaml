@@ -1,0 +1,3 @@
+interface:
+  display_name: "Lean Publication"
+  short_description: "Prepare and publish to GitHub, Palomar, or both"

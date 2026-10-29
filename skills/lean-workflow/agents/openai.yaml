@@ -1,0 +1,3 @@
+interface:
+  display_name: "Lean Proof Development"
+  short_description: "Prove and track paper results with focused checks"
