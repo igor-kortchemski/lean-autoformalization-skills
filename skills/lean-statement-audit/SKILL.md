@@ -1,6 +1,6 @@
 ---
 name: lean-statement-audit
-description: Check that Lean declarations faithfully cover claimed paper results and that their proof evidence supports the claim. Use for early statement checks, source coverage, interface approval, semantic changes, main-result completion, or publication review; not for every helper lemma.
+description: Check that Lean declarations faithfully cover claimed paper results and that their proof evidence supports the claim. Use for early statement checks, source coverage, interface approval, semantic changes, main-result completion, publication review, or auditing claimed errors in the paper or in cited works before an erratum; not for every helper lemma.
 license: CC-BY-4.0
 ---
 
@@ -85,6 +85,20 @@ Check especially:
   acceptable only when its side conditions and required invariance are justified.
 - **Strength:** a specialization, conditional helper, or changed conclusion is
   described honestly and is not counted as the original source result.
+- **Hidden content:** the conclusion is not carried by a hypothesis, a structure
+  or class field, or a class with no genuine instance. Project definitions are
+  not hollow: none ignores a parameter, replaces a condition by `True`, or is a
+  `def` returning `Prop` that stands in for a theorem. An abstract proxy for a
+  source quantity is connected to it by a proved theorem. A comment that
+  justifies a deviation is not evidence that the deviation is acceptable.
+
+When there is a concrete reason to suspect a mistranslation, check whether the
+premises have become jointly contradictory. A witness must satisfy all premises;
+a counterexample must also refute the exact conclusion. A short proof or proof
+by contradiction alone is not evidence of vacuity. Compare any finding with the
+source and report source contradictions without arbitrarily changing the target.
+Failure to find a counterexample does not certify fidelity; no per-helper check
+is required.
 
 A theorem proved from an extra estimate is useful as a helper. To certify the
 source result, find the proof that supplies that estimate and exports the exact
@@ -117,11 +131,55 @@ complete declared coverage, and established project requirements; a different
 route alone requires no approval. `MANUSCRIPT_RECOMMENDATIONS.md` is advisory,
 but correctness issues that affect coverage also belong in the report.
 
+## Audit corrections to the paper and errata to cited works
+
+Before an error in the paper enters an erratum or `MANUSCRIPT_CORRECTIONS.md`,
+have a reviewer who did not record it try to refute it. Claiming an error that
+is not one does more harm than missing one. Read the source location in the
+version the deliverable cites, and check:
+
+- the notation, conventions and standing assumptions of the paper, including
+  those stated in another section, a footnote or an earlier paper it relies on;
+- whether the claimed counterexample satisfies every hypothesis of the paper's
+  statement, as the paper means it, and violates its conclusion;
+- whether the failing step is really used, or another argument in the paper
+  covers it;
+- that the Lean evidence formalizes the paper's statement and not a
+  mistranslation, and is proved without `sorry` or unexpected axioms;
+- that the correction is the smallest one that makes the claim true, and that
+  its stated effect on the main results is right;
+- that an imprecision or a formalization choice has not been recorded as an
+  error.
+
+Give a verdict per entry: confirmed, reclassified, or withdrawn, with the
+reason. Only confirmed entries go into the deliverable.
+
+For an entry of `CITED_WORKS_ERRATA.md`, an error in a work the paper cites, the
+bar is higher: it says that other authors are wrong. Apply the checks above to
+that work, read in the version the entry names, and also check:
+
+- the cited work's own conventions, normalizations and standing assumptions,
+  which may differ from the paper's (a sign, an orientation, a parametrization);
+- that the work states the claim in the form recorded, and that a misreading or
+  a wrong citation by the paper is not being attributed to the work;
+- whether a published erratum, a later version or the later literature already
+  corrects it, and that the entry says what was searched;
+- that the evidence is a counterexample or a corrected version proved in Lean,
+  or a refutation that you checked yourself against the version read.
+
+Without such evidence the entry stays suspected; give the same verdicts
+otherwise, and check the entry's stated effect on the paper formalized.
+
 ## Check the proof evidence
 
 Compile the exact targets and inspect `#print axioms` through a temporary probe
 with current imports, batching related queries after coherent edits. An earlier
 verification claim still needs current evidence.
+
+A successful Lean Beam probe, an empty goal list (a probe running `sorry`
+leaves none either) or a "save ready" status (which tolerates `sorry`) is
+development feedback, not proof evidence: base the verdict on the compiled
+targets and the axiom check.
 
 Reuse mechanical outputs only when source, proof bodies, dependencies,
 toolchain, configuration, and targets are clearly unchanged. Do not treat a
@@ -142,6 +200,12 @@ any stricter project policy. Report incompatibilities with established policy
 before changing it; never widen it merely to pass a check. Inspect
 relevant definitions as well as headline theorems. A text search alone cannot
 establish this closure.
+
+Trace the advertised proof through its project-local dependencies. A
+substantial-looking lemma it does not use proves nothing for it; a `sorry`,
+`admit` or axiom moved or renamed into a helper still counts; `exfalso`,
+`False.elim` or `Subsingleton.elim` producing the main result calls for the
+vacuity check above.
 
 Respect frozen-file and Challenge exceptions precisely. An allowed draft hole
 can coexist with a faithful statement, but its export is still unproved. Never
@@ -165,7 +229,8 @@ deposit check.
 ## Give a proportionate verdict
 
 Separate statement fidelity, scope coverage, proof-route correspondence, proof
-completion, Lean checks, Comparator evidence, and Palomar verification. Give
+completion, Lean checks, Comparator evidence, and Palomar verification. Never let one compensate
+another: a sorry-free proof of an unfaithful statement fails. Give
 concrete findings with source/code locations and missing evidence. Do not
 manufacture a passing verdict from a completed table.
 

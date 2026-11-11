@@ -9,6 +9,11 @@ before claiming that the manuscript is correct.
 Use three categories:
 
 - **Correctness issue:** the manuscript needs repair or an explicit qualification.
+  Once an error in the paper is confirmed, it belongs in the corrections
+  deliverable (an erratum for a published paper, `MANUSCRIPT_CORRECTIONS.md`
+  for a paper on arXiv only or submitted); keep here only issues not yet
+  confirmed, or those of a paper that is not distributed. Errors in works the
+  paper cites go to `CITED_WORKS_ERRATA.md`, not here.
 - **Clarity recommendation:** likely to improve understanding.
 - **Optional observation:** potentially useful but not worth interrupting the
   formalization.

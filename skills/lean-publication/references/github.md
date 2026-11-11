@@ -17,8 +17,8 @@ Make the README answer four questions near the top:
 
 - **What is proved?** Link the paper and main Lean declarations, give a brief
   mathematical summary and honest status, and explain material assumptions or
-  gaps. Link the shared correspondence record for full scope and proof-route
-  differences. Keep internal process logs out of the main reading path.
+  gaps. Link the shared correspondence record for full scope, proof-route
+  differences, verification and how the formalization was produced. Keep internal process logs out of the main reading path.
 - **Where do I start?** Give a clear entry file and, when useful, a short module
   map. Use meaningful names, module explanations, and docstrings for the public
   mathematical interface. A reader should find the main statements without

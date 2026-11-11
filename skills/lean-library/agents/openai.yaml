@@ -1,0 +1,3 @@
+interface:
+  display_name: "Lean Library Development"
+  short_description: "Layer, check, document and audit a reusable Lean library"
