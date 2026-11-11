@@ -1,208 +1,194 @@
-# Lean Autoformalization Skills
+# Lean Autoformalization Skills — Claude Orchestrator
 
-Six focused skills for developing faithful Lean proofs, accompanying a research
-paper with a complete formalization, and preparing publication on GitHub,
-Palomar, or both. Updated on 29 October 2026. This is a streamlined adaptation of
-Scott Armstrong's collection, with one publication workflow; see
+Eight [Claude Code](https://claude.com/claude-code) skills for faithful Lean 4
+formalization: proving and repairing results, accompanying a research paper
+with a complete formalization, building reusable libraries, formalizing books,
+and publishing on GitHub, Palomar, or both. For large projects, Claude Code
+coordinates a campaign: it freezes approved statements, hands proofs to
+parallel workers, and seals each result only after a build, an axiom check and
+an independent audit.
+
+Version 2.0.0, 11 November 2026; see the [changelog](CHANGELOG.md). Adapted
+from [Scott Armstrong's collection](https://github.com/scottnarmstrong/LeanAutoformalizationSkills),
+via an earlier, unpublished adaptation for Codex orchestration; see
 [attribution and licensing](ATTRIBUTION.md).
+This is not an official release of that collection.
 
-The design keeps everyday proof work small and puts source review, independent
-verification, paper-coverage checks, and publication controls at the milestones
-where they matter. It does not relax an existing project's frozen-statement or
-proof-integrity rules.
-
-## Choose the skill that matches the task
+## Skills
 
 | Skill | When it helps |
 | --- | --- |
 | [lean-workflow](skills/lean-workflow/SKILL.md) | Prove or repair a result; search Mathlib; maintain paper coverage; compile and check |
-| [lean-project-architecture](skills/lean-project-architecture/SKILL.md) | Choose encodings, module boundaries, main statements, and a small Comparator interface for publication |
+| [lean-project-architecture](skills/lean-project-architecture/SKILL.md) | Choose encodings, module boundaries, main statements, and a small Comparator interface |
 | [lean-statement-audit](skills/lean-statement-audit/SKILL.md) | Review statement fidelity, paper coverage, proof correspondence, or final evidence |
 | [lean-elaboration](skills/lean-elaboration/SKILL.md) | Diagnose actual slowness or run a requested benchmark |
-| [lean-orchestrator](skills/lean-orchestrator/SKILL.md) | Coordinate independent proof tasks, route exploration, reviews, and shared compilation |
-| [lean-publication](skills/lean-publication/SKILL.md) | Prepare and verify GitHub publication, Palomar submission, or both; carry out authorised external actions |
+| [lean-orchestrator](skills/lean-orchestrator/SKILL.md) | Coordinate a campaign from Claude Code with Sonnet subagents and background Codex or Open Math OS workers |
+| [lean-publication](skills/lean-publication/SKILL.md) | Prepare and verify GitHub publication, Palomar submission, or both |
+| [lean-library](skills/lean-library/SKILL.md) | Layer, check, document and audit a reusable library |
+| [lean-book](skills/lean-book/SKILL.md) | Formalize a book by other authors as a library, with honest coverage claims |
 
-Ordinary work usually needs only `lean-workflow`. Load the other skills when
-their task arises, rather than reading the entire collection at every turn.
+Ordinary work needs only `lean-workflow`; load the others when their task
+arises. Everything except `lean-orchestrator` works with Claude Code alone.
 
-## Paper-companion workflow
+## Requirements
 
-When publication is part of the intended outcome, prepare a Palomar-compatible
-GitHub artifact by default; apply the relevant constraints during design. Full
-Palomar preflight, submission, and registration are separate requested actions.
-Use the short publication clause in [Prompt suggestions](PROMPT_SUGGESTIONS.md)
-and keep expensive checks at meaningful integration and publication milestones.
+- A Lean 4 project with Mathlib, and its Mathlib cache (`lake exe cache get`).
+- Claude Code, logged in.
+- For campaigns with background workers (`lean-orchestrator`), one or more of:
+  - the Codex CLI, logged in with a ChatGPT plan, for GPT workers;
+  - an [Open Math OS](https://os.openmathmodel.org) team account, for Kimi and
+    other models through the Codex CLI, and optionally on the team's hosted VM.
+    It needs the keys `OPENMATHOS_API_KEY` and, for quota readings and the VM,
+    `OPENMATHOS_PLATFORM_KEY`, in the macOS Keychain or the environment.
+- Python 3 for the bundled scripts (standard library only; tested with 3.14
+  and 3.15). They also call `curl` (the VM launcher) and macOS `security`
+  (keys in the Keychain).
+- Optional: [Lean Beam](https://github.com/leanprover/lean-beam) for fast
+  probes on the Claude side (see below).
 
-Before substantial proof work on a main result or work depending on a shared
-source-facing interface, obtain a passing independent statement review. The
-[early statement checkpoint](skills/lean-statement-audit/SKILL.md#early-statement-checkpoint)
-uses one reviewer by default, batches related targets, and reuses valid reviews.
-It permits exploration and work to establish missing characterization bridges;
-ordinary helpers need no separate checkpoint. The entry-point skills also support
-direct review when the audit companion is not installed.
+**Unofficial Open Math OS tools.** The VM launcher (`vm_worker.py`) drives the
+Open Math OS VM through the web app's own protocol, which is not documented,
+and the Open Math OS quota reader (`openmathos_quota.py`, also used by the
+Codex launcher for its quota floor) calls the Platform API, which is not
+publicly documented either. They are unofficial: not endorsed or supported by
+Open Math OS, and they may break or be refused at any time. Use them at your
+own risk and within Open Math OS's terms, or leave the VM route out of your
+campaigns. The models themselves are called through the documented model API.
 
-For a research paper published with its formalization, use the root templates
-as needed:
+Developed and tested on macOS (a four-core Mac with 24 GB); the
+scripts use macOS tools such as `caffeinate` and APFS clones (`cp -c`). Other
+systems are untested.
 
-- [FORMALIZATION_REPORT.md](FORMALIZATION_REPORT.md), or the project's existing
-  equivalent record, provides the required coverage and correspondence record.
-  Update it at coherent milestones. It maps every theorem, proposition, lemma,
-  corollary, and substantive mathematical claim in the declared scope to proved Lean code,
-  and records mathematically substantive departures from the paper.
-- [MANUSCRIPT_RECOMMENDATIONS.md](MANUSCRIPT_RECOMMENDATIONS.md) is an optional,
-  advisory list of correctness, clarity, and exposition observations. It may
-  remain empty and does not authorize manuscript edits.
+## Installation
 
-An isolated lemma task does not require a new paper-wide inventory; update an
-existing applicable record and report substantive source departures as needed.
-At intermediate milestones, review changed results and affected dependencies,
-preserving valid inventory entries and review findings. A proof-route change
-requires revisiting correspondence even when statement review remains valid.
+Each directory under `skills/` is a skill. Install them where Claude Code reads
+skills (`.claude/skills/` in a project, or `~/.claude/skills/`) and, for Codex
+workers, where Codex reads them (`.agents/skills/` or `~/.agents/skills/`); a
+symlink keeps one copy. Keep each skill's `references/`, `scripts/` and
+`assets/` with its `SKILL.md`. Optionally copy the subagent definitions from
+`skills/lean-orchestrator/assets/agents/` to the project's `.claude/agents/`.
 
-The formal proof may use different helpers, library results, equivalent
-representations, and local arguments. The default is to preserve the paper's
-main strategy and novel ideas. Routine differences need no report. Prioritize
-proving every main result and its required dependencies, while retaining all
-other in-scope claims as completion obligations.
+```sh
+git clone https://github.com/igor-kortchemski/lean-autoformalization-skills.git lean-skills
+cd lean-skills && git checkout v2.0.0
+mkdir -p /path/to/project/.claude/skills
+rsync -a --exclude='.DS_Store' --exclude='._*' --exclude='.git/' --exclude='.lake/' --exclude='__pycache__/' skills/ /path/to/project/.claude/skills/
+```
 
-Work autonomously within the established scope and authorization. Resolve
-uncertainties from available evidence first. Ask only for essential missing
-input, decisions, or authorization that block faithful completion; continue
-useful independent work. Routine proof choices, difficult proofs, and permission
-to continue are not reasons to ask. If the user explicitly requests no questions,
-record blockers and leave dependent work pending without guessing or inferring
-authorization. Finish when the scope is verified, an applicable resource limit
-is reached, or no useful authorized work remains; report results and open
-obligations accurately.
+Install from a tagged version and record the tag in the project, so an
+installed copy can be compared with it by `diff -r`. Before replacing an
+existing installation, check for local customizations and for skills of the
+same name from another edition; keep one edition per discovery location.
+Codex reads `AGENTS.md` but not `CLAUDE.md`, so worker briefs repeat the
+project rules they depend on.
 
-## Publication workflow
+Lean Beam is optional and used only on the Claude side: install it with its
+own installer (`./scripts/install-beam.sh --claude --claude-mcp --toolchain
+<the project's toolchain>`), without its Codex options, which also installs
+its `lean-beam` skill; this package does not include it.
 
-Use `lean-publication` for an existing public repository, a first publication,
-or a curated export from private development. Choose the destination and the
-requested action independently: preparing a candidate does not itself publish,
-submit, or register it. Reuse authorisation already given for those actions.
+## Authorizing external workers
 
-GitHub artifacts for mathematical results should meet current Palomar requirements,
-including repository layout, dependencies, permitted axioms, the comparison
-interface, and metadata. Report conflicts with existing project constraints
-before changing them. State what was checked and what remains unverified;
-artifact preparation does not claim full Palomar verification.
+Installing the skills authorizes nothing. A campaign sends project material
+(Lean code, compiler output, the relevant parts of the sources) to a provider
+only where your instructions allow it, in `~/.claude/CLAUDE.md` or the
+project's `CLAUDE.md`. For example:
 
-Comparator verification is the default for published mathematical results,
-including small and single-theorem projects. Keep the comparison interface
-focused on advertised results and review it against the source; project size
-alone is not a reason to omit it. Reuse applicable evidence at integration and
-publication checkpoints. Document actual compatibility or policy blockers.
+```markdown
+## Authorization for Codex workers
 
-- **GitHub:** prepare a readable README, links from paper results to Lean code,
-  reproducible build and Comparator instructions, suitable CI, licensing, and
-  citation metadata. Include CI and Comparator badges near the README title,
-  linked to real checks with accurate status and scope.
-  Create a versioned GitHub Release when requested. Blueprint, API documentation,
-  and Zenodo archival are optional. Include Palomar-compatible artifact files;
-  a GitHub-only request does not run full Palomar preflight or registry actions.
-- **Palomar:** reuse an existing public GitHub commit and its adequate
-  documentation, or prepare a public candidate if one is needed. Apply the
-  current Challenge/Solution, metadata, Comparator, and preflight requirements.
-  A GitHub Release is not required. Publishing private material, submission for
-  review, and final registration have their own authorisation scopes.
-- **Both:** prepare one candidate with the GitHub and Palomar files before final
-  verification, and identify the same commit for both destinations. Share the
-  coverage record, source review, and applicable build evidence; repeat affected
-  checks when their inputs change.
+I authorize Claude Code to send the material of my Lean projects under
+`~/Lean` (sources, Lean code, compiler output) to OpenAI through Codex workers,
+for formalization work. Unpublished coauthor material is excluded unless the
+project says otherwise.
+```
 
-The [GitHub guide](skills/lean-publication/references/github.md) and
-[Palomar guide](skills/lean-publication/references/palomar.md) hold the destination
-details. Routine proof development and mathematical review stay in their
-existing skills. The unified entry replaces `palomar-deposit`; there is no
-second release skill or alias to install from this collection.
+Write one such paragraph per provider (Codex, Open Math OS, the Open Math OS
+VM), and narrow it in a project's own instructions when needed. The
+coordinator asks before any publication, submission or other outside action.
 
-## Use and installation
+Where the skills support several accounts (Codex accounts chosen by remaining
+quota, or a separate launcher for background Claude workers, which this
+package does not include), use only accounts you hold, within each provider's
+terms. Choosing among accounts spreads work over the limits each account
+already has; it does not raise or bypass any of them.
 
-Each directory under `skills/` is a skill entry with YAML
-frontmatter and UI metadata. Copy the desired directories into the skill
-location used by your agent, such as a project's `.agents/skills/`. Keep
-referenced files with their skill. Install all six for the complete route. For
-the paper-companion workflow, reuse an existing equivalent coverage record or
-copy the formalization report template to the project root; use the
-recommendations template as needed.
+## First steps
 
-For publication-sensitive design, `lean-publication` supplies the detailed policy
-references. The architecture and workflow skills can also consult the linked
-official standard directly; a missing companion does not require installation.
+Start Claude Code from the Lean project directory, then ask, for example:
 
-When copied skills will be shared, preserve the accompanying attribution,
-adaptation notices, and applicable license files alongside them, without
-replacing the destination project's license. Exclude `.DS_Store` files from
-distribution archives.
+- “Use /lean-workflow to prove this lemma and check its axioms.”
+- “Use /lean-orchestrator to coordinate this paper formalization.”
+- “Use /lean-statement-audit to compare these exports and the coverage table with the paper.”
+- “Use /lean-publication to prepare this paper companion for GitHub only.”
+- “Use /lean-library to audit this library for public reuse, without changing it.”
+- “Use /lean-book to set up the formalization of this book.”
 
-Review existing directories and symlinks before copying: five skill names are
-shared with the original collection. Do not merge two versions blindly or
-install duplicate names in competing discovery locations.
+For a campaign, start the coordinator as the profile recommends, keeping the
+Mac awake (`caffeinate -is claude --model claude-opus-5-5 --effort xhigh`).
+More starters are in [Prompt suggestions](PROMPT_SUGGESTIONS.md).
 
-When upgrading from the earlier package, inspect the installed `palomar-deposit`
-directory or symlink and preserve any local customizations. After installing
-`lean-publication`, retire the old entry, update explicit references to its name,
-and check that only the intended publication entry remains discoverable. Copying
-the new directories over an existing installation does not remove the old name.
+## How a campaign runs
 
-This package does not install anything. It contains no installation script, Lean
-project, proof holes, credentials, or preconfigured submission workflow. Local
-project instructions continue to govern versions, permitted actions, frozen
-declarations, draft quarantine, build concurrency, and public release.
+Opus at `xhigh` (`high` allowed while proving frozen nodes) coordinates from
+the Lean project directory. Sonnet subagents audit and clean up. Routine Lean
+goes to Kimi K3.1 Pro through the Codex CLI where Open Math OS is authorized,
+with GPT 6 Luna as the fallback; GPT 6.1 Sol takes hard nodes; Kimi can also
+run on the Open Math OS VM. Statements are approved by you and frozen before
+workers prove them; `freeze_check.py` verifies that a worker changed only the
+proof holes and that the frozen declarations still elaborate to the same
+types.
 
-Example requests:
+Everything operational — roles, models, caps, campaign phases, freezing and
+sealing, escalation, quota floors — is in one editable file, the
+[Claude profile](skills/lean-orchestrator/references/claude-profile.md). Its
+defaults target a four-core machine, where Lean compilation is the bottleneck;
+adjust the caps to yours (the profile says how). Model names are those of
+November 2026; replace them as models change. The bundled scripts in
+[`skills/lean-orchestrator/scripts/`](skills/lean-orchestrator/scripts/)
+launch and cancel Codex and VM workers, read quotas, freeze and check approved
+statements, list local tools, and count tokens; the
+[Codex worker guide](skills/lean-orchestrator/references/codex-worker.md) and
+[VM worker guide](skills/lean-orchestrator/references/openmathos-vm.md)
+explain them.
 
-- “Use $lean-workflow to prove this lemma and check its axioms.”
-- “Formalize every result in this paper and maintain the formalization report.”
-- “Choose a suitable proof route and record substantive departures from the paper.”
-- “Use $lean-statement-audit to compare these exports and coverage table with the paper.”
-- “Use $lean-publication to prepare this paper companion for GitHub only.”
-- “Use $lean-publication to prepare a Palomar submission from this public commit.”
-- “Use $lean-publication to prepare GitHub publication and Palomar submission from one candidate, without publishing or submitting.”
+## Paper companion
 
-For short copy-ready starters and optional task-specific detail, see
-[Prompt suggestions](PROMPT_SUGGESTIONS.md).
+For a paper formalization, use the root templates as needed:
 
-## What was simplified
+- [FORMALIZATION_REPORT.md](FORMALIZATION_REPORT.md): the coverage and
+  correspondence record, mapping every result in the declared scope to proved
+  Lean code and recording substantive departures.
+- [MANUSCRIPT_RECOMMENDATIONS.md](MANUSCRIPT_RECOMMENDATIONS.md): optional
+  advisory remarks on the paper.
+- `lean-workflow`'s [ERRATUM.tex](skills/lean-workflow/assets/ERRATUM.tex)
+  (journal paper) or
+  [MANUSCRIPT_CORRECTIONS.md](skills/lean-workflow/assets/MANUSCRIPT_CORRECTIONS.md)
+  (arXiv or submitted) for audited errors in the paper, and
+  [CITED_WORKS_ERRATA.md](skills/lean-workflow/assets/CITED_WORKS_ERRATA.md)
+  for errors in cited works. All are drafts for the user, never sent.
 
-Search, proof patterns, naming, and recurring API advice are folded into the
-daily workflow. Project planning includes an optional lightweight dependency
-graph. Performance diagnosis and requested build measurement share one skill.
-Publication shares one preparation workflow and loads destination details only
-when needed.
+Obtain an independent statement review before substantial proof work on a main
+result. Preserve the paper's main strategy by default; routine differences need
+no report. When publication is planned, prepare a Palomar-compatible GitHub
+artifact by default; publishing, submission and registration are separate,
+explicitly authorized actions.
 
-The collection still has six skills. There is no mandatory manifest system,
-per-helper approval, exhaustive graph database, machine-readable correspondence
-schema, or status form. Existing versions of those controls remain binding where a project has
-deliberately adopted them. The formalization report is one lightweight human
-readable table; the recommendations file is advisory.
+Project instructions always govern versions, permitted actions, frozen
+declarations, build concurrency and public release; these skills authorize no
+new Challenge holes, toolchain or license changes, publication or submission.
 
-The retained safeguards are complete declared result coverage, precise
-mathematical statements, honest proof-route correspondence, axiom checks,
-dependency/build hygiene, source review at major boundaries, and the applicable
-publication checks. Consider a small Comparator Challenge early when publication
-is planned; load the current Palomar submission procedure only when applicable.
+## Testing
 
-## Palomar and existing projects
+[TESTING.md](TESTING.md) summarizes what was actually checked: the scripts
+with stub workers, small trial campaigns on a published paper, Open Math OS
+runs, and the list of what has not been tested yet. Full research-paper
+formalization, Palomar submission, `lean-library` and `lean-book` remain
+untested on a real project. [`validation/check_package.py`](validation/README.md)
+checks the package itself and runs in CI.
 
-The [dated requirements guide](skills/lean-publication/references/requirements.md)
-links the official sources checked for this edition. Re-read them for relevant
-design decisions and final publication candidates; requirements can change and
-this archive does not certify a project. Do
-not use a Palomar-compatible default to override stricter repository rules.
+## License
 
-For an existing project with approved frozen results, keep its manifests,
-checkers, provider quarantine, and author approval process. These skills do not
-authorize new Challenge holes, toolchain changes, license changes, publication,
-submission, or registration. The user's actual instruction and existing
-authorization determine which work is permitted.
-
-## Validation
-
-Package validation results are recorded in [VALIDATION.md](VALIDATION.md). They
-cover skill structure, links, archive integrity, and instruction-level scenario
-review, not an end-to-end formalization or a real Palomar submission. The design
-is a practical starting point, not a claim of universally optimal performance.
-Refine it using observed failures rather than adding universal rules for
-hypothetical cases.
+The instruction text is under [CC BY 4.0](LICENSE) and the Python scripts
+under [Apache-2.0](LICENSES/Apache-2.0.txt); details and third-party notices
+are in [ATTRIBUTION.md](ATTRIBUTION.md).

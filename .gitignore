@@ -1,1 +1,4 @@
 .DS_Store
+._*
+.lake/
+__pycache__/

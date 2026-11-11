@@ -1,0 +1,40 @@
+% Template: erratum to a paper published in a journal, drafted from the errors
+% that a Lean formalization found. Copy it to the project, fill it in, compile
+% it with `latexmk -pdf ERRATUM.tex`, and present the PDF to the user as a
+% draft; the skills never send it. Locations refer to the published version,
+% not to the arXiv version that was formalized. List only errors in the paper, as classified in the
+% formalization report, each audited independently; keep every item short.
+% At the user's request, the same template serves for an erratum to a cited
+% work of which the user is an author, from the confirmed entries of
+% CITED_WORKS_ERRATA.md.
+\documentclass[11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage[hidelinks]{hyperref}
+
+\title[Erratum]{Erratum to ``[Title of the paper]''}
+\author{[Authors of the paper]}
+\date{}
+
+\begin{document}
+
+\begin{abstract}
+A formal verification in the Lean proof assistant of the results of
+[reference: authors, title, journal, volume (year), pages,
+\href{https://doi.org/[DOI]}{doi:[DOI]}] found the errors listed below.
+[None of them affects the main results. / The main results hold as corrected
+below.] The formalization is available at [repository and revision].
+\end{abstract}
+
+\maketitle
+
+% One item per error: location in the published version, the correction, then
+% the reason. Write the correction as the paper should read.
+\begin{enumerate}
+\item \emph{[Theorem 2.3], [p.~12, l.~5].}
+  [The statement requires the additional hypothesis $\mu(A) > 0$:]
+  [the corrected statement or step.]
+  [Reason: a counterexample, or the step that fails and why.]
+\end{enumerate}
+
+\end{document}

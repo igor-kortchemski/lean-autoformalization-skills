@@ -1,0 +1,3 @@
+interface:
+  display_name: "Lean Book Formalization"
+  short_description: "Formalize a book as a library with a book-to-code map"

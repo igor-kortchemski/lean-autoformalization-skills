@@ -1,6 +1,6 @@
 ---
 name: lean-workflow
-description: Write, repair, or refactor Lean 4 proofs in Mathlib projects. Use for ordinary formalization work, including paper-result coverage, lemma search, and focused validation; use specialized skills only for design, source audits, measured performance, coordination, or publication.
+description: Write, repair, or refactor Lean 4 proofs in Mathlib projects. Use for ordinary formalization work, including paper-result coverage, lemma search, and focused validation, and for drafting the corrections that formalization finds (an erratum or list of corrections to the paper, errata to cited works); use specialized skills only for design, source audits, measured performance, coordination, or publication.
 license: CC-BY-4.0
 ---
 
@@ -18,6 +18,11 @@ missing input, decisions, or authorization needed for faithful completion;
 explain the blocker and continue independent work. If questions are prohibited,
 record the blocker and leave dependent work pending without guessing mathematics
 or permission.
+
+When assigned by a coordinator, follow the brief's file ownership and resource
+limits. Request reviews, reinforcement, or a heavy build from that coordinator;
+do not launch other agents yourself. Return the changed files, useful findings,
+remaining obstruction, and actual validation output so work can be continued.
 
 ## Work at the smallest useful scale
 
@@ -52,13 +57,26 @@ or permission.
    validation, and remaining mathematical obligations. In a paper-companion
    project, update coverage at a coherent milestone, not after every helper edit.
 
+When the brief or the project rules grant the `lean-beam` tools, use them in
+the inner loop instead of temporary probes that reload imports: goals at a
+tactic, `#check`, `#print` and tactic trials at the real source position.
+Follow the installed `lean-beam` skill for the commands; these rules and the
+project's prevail over it, so never run `lake clean` or create Beam
+checkpoints (`save`, `close-save`). A probe edits nothing: to keep a result,
+edit and save the file, then synchronize it. Beam results are development
+feedback; the compilation of step 5 and the axiom check below remain the
+evidence. Close the documents you opened, always before a `lake build`, and do
+not open or synchronize one while a build runs on the same checkout.
+
 Reuse search results and diagnostics. If repeated attempts reach the same
 obstruction without new evidence, change route or isolate the missing lemma.
 If still blocked after investigating viable alternatives, record the exact goal,
 attempted approaches, and missing input or mathematics without weakening the target.
-No fixed retry count is needed. Finish when the scope is verified, an applicable
-resource limit is reached, or no useful authorized work remains; report results,
-evidence, and unresolved obligations.
+No fixed retry count is needed. End work when the scope is verified, the user
+requests a stop, or no useful authorized work remains. If an applicable resource
+limit prevents further work on your task, suspend it and retain a useful handoff.
+The coordinator can continue other authorized tasks within their own limits.
+Report results, evidence, and unresolved obligations.
 
 Prefer nearby Mathlib naming and proof style. Use explicit intermediate facts
 where they clarify the argument; keep successful concise automation when it is
@@ -85,6 +103,39 @@ corrections, or changed coverage in the report; put useful exposition advice in
 `MANUSCRIPT_RECOMMENDATIONS.md`, which may remain empty. A different proof does
 not silently validate or repair a manuscript argument that it bypasses.
 
+Classify each recorded difference when you record it: an **error in the paper**
+(a false or overstated claim, a missing hypothesis without which a claim fails,
+a proof step that does not follow, a wrong constant, exponent or case), an
+**imprecision** (right mathematics, unclear convention, quantifier, domain or
+boundary case), or a **formalization choice**. Give each error a reason a
+reader can check: a counterexample, or the step that fails and why. For a paper
+formalization, the coordinator (or the single agent, when there is no
+coordinator) asks the author once at the start whether the paper is published
+in a journal, on arXiv only or submitted, or not distributed, and records the
+answer in the report; a worker never asks, and reports the status as missing
+if its brief does not give it. At the end, errors in a published paper go into an erratum
+drafted from this skill's [`assets/ERRATUM.tex`](assets/ERRATUM.tex) and compiled
+to PDF, and errors in a paper on arXiv only or submitted into
+`MANUSCRIPT_CORRECTIONS.md` at the project root, from
+[`assets/MANUSCRIPT_CORRECTIONS.md`](assets/MANUSCRIPT_CORRECTIONS.md); each entry first passes an
+independent audit (see `lean-statement-audit`). These are drafts for the
+authors: never send them to a journal, an archive or a coauthor.
+
+Errors found in a work the paper cites or relies on (an article, preprint or
+book, by other authors or by the user) are recorded in every paper
+formalization, whatever the publication status, in `CITED_WORKS_ERRATA.md` at
+the project root, created at the first entry, from
+[`assets/CITED_WORKS_ERRATA.md`](assets/CITED_WORKS_ERRATA.md), as soon as they
+are found. Record the version actually read and its exact location; check that
+work's conventions before calling a mismatch an error, and search for a
+published erratum or a later version that already corrects it. An entry stays
+suspected until an independent audit confirms it. A wrong citation by the paper
+itself is an error in the paper, not an entry here; a false cited claim that
+the paper relies on gets an entry in both places. The register is for the user:
+never send it to the cited work's authors, a journal or an archive. An erratum
+to a cited work of which the user is an author is drafted from `ERRATUM.tex`
+only at the user's request.
+
 ## Preserve the mathematical target
 
 Keep the source carriers, boundary cases, normalization, and quantifier order.
@@ -92,6 +143,15 @@ In particular, a uniform constant must not acquire dependence on a parameter
 through reordered binders. Audit bundled assumptions as carefully as explicit
 hypotheses. Proving a convenient specialization is progress toward a target,
 not completion of the original target.
+
+Treat an unused-hypothesis warning on a source-facing statement as a finding.
+If the statement assumes what the source derives, restate it to conclude what
+the source concludes, and have the restated statement reviewed again. If the
+source states a hypothesis Lean does not need, such as $y \neq 0$ when
+$x/0 = 0$ in Lean, keep it, named with a leading `_`, and give the reason in a
+comment. If the result holds without it, keep the source's statement and prove
+the general one as a separate lemma. Never change a frozen statement this way:
+report the finding to the coordinator or the user instead.
 
 Definitions must have their claimed meaning on the domain actually used. An
 existing totalized Mathlib definition or a classical choice can be legitimate;
@@ -119,6 +179,9 @@ Use `lean-project-architecture` when design work is needed.
 - Respect shared build limits; do not kill another session's processes or
   overwrite its work. A focused target may rebuild upstream project modules;
   preserve installed dependency artifacts according to repository policy.
+- Keep a running build's source files and dependencies stable. Continue edits
+  only on independent files or an isolated copy; coordinate before changing
+  inputs being checked, and refresh affected evidence after changes.
 - Use `module` and the pinned toolchain's visibility conventions for publication
   source files. Keep proof implementations out of the Challenge import closure.
 - Follow the project's trust policy for computational proof methods and inspect
